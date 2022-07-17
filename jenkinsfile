@@ -7,7 +7,7 @@ pipeline{
     stages{
         stage('Fetch code'){
             steps{
-                git branch: 'master', url: 'https://github.com/gautamjha2002/Employee-Management-System.git'
+                git branch: 'master', url: 'https://github.com/gautamjha2002/CI-CD_Project.git'
             }
         }
         stage('Build'){
@@ -39,7 +39,7 @@ pipeline{
                     nexusUrl: '15.207.113.130:8081',
                     groupId: 'QA',
                     version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
-                    repository: 'Employee-Management-System',
+                    repository: 'CI-CD-Project',
                     credentialsId: 'nexuslogin',
                     artifacts:[
                         [artifactId: 'EMS-APP',
