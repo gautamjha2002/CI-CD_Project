@@ -4,6 +4,10 @@ def COLOR_MAP = [
 ]
 pipeline{
     agent any
+    environment{
+        DOCKER_USER = 'gautamjha3112002'
+
+    }
     stages{
         stage('Fetch code'){
             steps{
@@ -36,7 +40,7 @@ pipeline{
                 nexusArtifactUploader(
                     nexusVersion: 'nexus3',
                     protocol: 'http',
-                    nexusUrl: '15.207.113.130:8081',
+                    nexusUrl: '35.154.9.134:8081',
                     groupId: 'QA',
                     version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
                     repository: 'CI-CD-Project',
@@ -48,6 +52,22 @@ pipeline{
                         type: 'jar']
                     ]
                 )
+            }
+        }
+        stage('Building Docker Image'){
+            steps{
+                sh 'docker build -t ${DOCKER_USER}/${JOB_NAME}:0.${BUILD_ID} .'
+            }
+        }
+        stage('Push to DockerHub'){
+            steps{
+                timeout(time:5, unit:'DAYS'){
+                    input message: 'Approve Push to docker Hub'
+                }
+                withCredentials([string(credentialsId: 'dockerlogin', variable: 'dockerlogin')]) {
+                   sh 'docker login -u gautamjha3112002 -p ${dockerlogin}'
+                   sh 'docker push ${DOCKER_USER}/${JOB_NAME}:0.${BUILD_ID}'
+                }
             }
         }
     }
