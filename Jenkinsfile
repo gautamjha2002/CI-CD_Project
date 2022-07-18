@@ -56,7 +56,7 @@ pipeline{
         }
         stage('Building Docker Image'){
             steps{
-                sh 'sudo docker build -t ${DOCKER_USER}/${JOB_NAME}:0.${BUILD_ID} .'
+                sh 'docker build -t ${DOCKER_USER}/${JOB_NAME}:0.${BUILD_ID} .'
             }
         }
         stage('Push to DockerHub'){
