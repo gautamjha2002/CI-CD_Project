@@ -65,8 +65,8 @@ pipeline{
                     input message: 'Approve Push to docker Hub'
                 }
                 withCredentials([string(credentialsId: 'dockerlogin', variable: 'dockerlogin')]) {
-                   sh 'sudo docker login -u gautamjha3112002 -p ${dockerlogin}'
-                   sh 'sudo docker push ${DOCKER_USER}/${JOB_NAME}:0.${BUILD_ID}'
+                   sh 'docker login -u gautamjha3112002 -p ${dockerlogin}'
+                   sh 'docker push ${DOCKER_USER}/${JOB_NAME}:0.${BUILD_ID}'
                 }
             }
         }
